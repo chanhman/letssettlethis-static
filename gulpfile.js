@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const twig = require('gulp-twig');
+const browserSync = require('browser-sync').create();
 const { watch } = require('gulp');
 
 // Compile CSS
@@ -18,17 +19,28 @@ gulp.task('css', () => {
       ])
     )
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('build/'));
+    .pipe(gulp.dest('build/'))
+    .pipe(browserSync.stream());
 });
 
 // Compile Twig templates to HTML
 gulp.task('templates', () => {
-  return gulp.src('src/*.html')
+  return gulp
+    .src('src/*.html')
     .pipe(twig())
     .pipe(gulp.dest('build'));
 });
 
 exports.default = function() {
+  browserSync.init({
+    server: {
+      baseDir: './build'
+    }
+  });
+
   watch('src/**/*.css', gulp.task('css'));
-  watch('src/**/*.html', gulp.task('templates'));
+  watch('src/**/*.html', gulp.task('templates')).on(
+    'change',
+    browserSync.reload
+  );
 };
