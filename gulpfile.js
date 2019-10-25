@@ -31,6 +31,11 @@ gulp.task('templates', () => {
     .pipe(gulp.dest('build'));
 });
 
+// Move images
+gulp.task('images', () => {
+  return gulp.src('src/img/**.*').pipe(gulp.dest('build/img'));
+});
+
 exports.default = function() {
   browserSync.init({
     server: {
@@ -38,7 +43,8 @@ exports.default = function() {
     }
   });
 
-  watch('src/**/*.css', gulp.task('css'));
+  watch('src/img/**.*', gulp.task('images'));
+  watch('src/css/**/*.css', gulp.task('css'));
   watch('src/**/*.html', gulp.task('templates')).on(
     'change',
     browserSync.reload
