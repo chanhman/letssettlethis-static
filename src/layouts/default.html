@@ -15,7 +15,12 @@
   </head>
   <body>
     <div class="m-8 border-8">
+      {% include '../components/header.html' %}
+      {% include '../components/title.html' %}
+
       {% block content %}{% endblock %}
+
+      {% include '../components/footer.html' %}
     </div>
   </body>
 </html>
